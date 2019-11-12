@@ -1,11 +1,10 @@
-
 :- use_module(library(uuid)).
 :- use_module(library(http/json)).
 
 outputRange(InitialState, Goal, Params, Lattices) :-
     uuid(RangeId, [version(4)]),
     format("Creating range ~s~n", [RangeId]),
-    format(atom(RangeDirRel), "../ranges/~s", [RangeId]),
+    format(atom(RangeDirRel), "./ranges/~s", [RangeId]),
     absolute_file_name(RangeDirRel, RangeDir),
     make_directory_path(RangeDir),
     findall((LatticeId, Lattice), (member(Lattice, Lattices), uuid(LatticeId, [version(4)])), LatticesWithIds),
@@ -54,10 +53,10 @@ outputLattice(RangeDir, RangeId, (LatticeId, Lattice)) :-
     make_directory_path(LatticeDir),
     % link packer files
     format(atom(LatticePackerDir), "~s/packer", [LatticeDir]),
-    absolute_file_name("../packer", PackerDir),
+    absolute_file_name("./packer", PackerDir),
     link_file(PackerDir, LatticePackerDir, symbolic),
     format(atom(LatticePackerScript), "~s/run_packer.sh", [LatticeDir]),
-    absolute_file_name("../run_packer.sh", PackerScript),
+    absolute_file_name("./run_packer.sh", PackerScript),
     link_file(PackerScript, LatticePackerScript, symbolic),
     generatePNGFromLattice(LatticeDir, Lattice),
     Lattice = (Configs, _),
@@ -65,7 +64,7 @@ outputLattice(RangeDir, RangeId, (LatticeId, Lattice)) :-
 
 createYamlFiles(Configs, LatticeDir) :-
     format(atom(AnsibleDir), "~s/roles", [LatticeDir]),
-    absolute_file_name("../ansible/roles", ParentAnsibleDir),
+    absolute_file_name("./ansible/roles", ParentAnsibleDir),
     link_file(ParentAnsibleDir, AnsibleDir, symbolic),
     print(ParentAnsibleDir),nl,
 	formatRoles(Configs, Roles),
