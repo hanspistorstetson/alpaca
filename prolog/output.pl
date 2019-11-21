@@ -11,7 +11,7 @@ outputRange(InitialState, Goal, Params, Lattices) :-
     outputRangeMetadata(RangeDir, RangeId, InitialState, Goal, Params, LatticesWithIds),
     printLattices(LatticesWithIds), nl,
     maplist(outputLattice(RangeDir, RangeId), LatticesWithIds),
-    working_directory(OrigWD, "../ranges"),
+    working_directory(OrigWD, "./ranges"),
     format(atom(Command), "zip -r ~s.zip ~s", [RangeId, RangeId]),
     shell(Command),
     working_directory(_, OrigWD).
@@ -60,6 +60,7 @@ outputLattice(RangeDir, RangeId, (LatticeId, Lattice)) :-
     link_file(PackerScript, LatticePackerScript, symbolic),
     generatePNGFromLattice(LatticeDir, Lattice),
     Lattice = (Configs, _),
+    createTerraformFiles(RangeId, LatticeDir),
 	createYamlFiles(Configs, LatticeDir), !.
 
 createYamlFiles(Configs, LatticeDir) :-
@@ -70,6 +71,24 @@ createYamlFiles(Configs, LatticeDir) :-
 	formatRoles(Configs, Roles),
 	formatVars(Configs, Vars),
 	createPlaybook(Vars, Roles, LatticeDir).
+
+createTerraformFiles(RangeId, LatticeDir) :-
+    format(atom(TerraformDir), "~s", [LatticeDir]),
+    format("Writing ~s~n", [TerraformDir]),
+    format(atom(TerraformMain), "~s/main.tf", [TerraformDir]),
+    format(atom(TerraformVariables), "~s/variables.tf", [TerraformDir]),
+    format(atom(TerraformTFVars), "~s/terraform.tfvars", [TerraformDir]),
+    copy_file("./terraform/main.tf", TerraformMain),
+    copy_file("./terraform/variables.tf", TerraformVariables),
+    copy_file("./terraform/terraform.tfvars", TerraformTFVars),
+    read_file_to_string("./terraform/vm.tf", BaseString, []),
+    format(atom(VMNAME), "vm_~s", [RangeId]),
+    re_replace("`VMNAME`"/g, VMNAME, BaseString, FormattedString),
+    open(TerraformMain, append, Stream),
+    format(atom(StringToWrite), FormattedString, []),
+    write(Stream, StringToWrite),
+    close(Stream).
+
 
 createPlaybook(Vars, Roles, LatticeDir) :-
 	format(atom(PlaybookFname), "~s/playbook.yml", [LatticeDir]),

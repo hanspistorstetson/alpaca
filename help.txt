@@ -1,0 +1,846 @@
+"-----------"
+'Goal: root_shell'
+'Goals: '
+'InitialState: '
+'StartingConfigs: '
+'Input: vsftpd234'
+'Description: vsftpd-backdoor'
+'Output: root_shell'
+_548
+"-----------"
+"-----------"
+'Goal: vsftpd234'
+'Goals: '
+'InitialState: root_shell'
+'StartingConfigs: '
+'Input: '
+'Description: scan-ftp'
+'Output: ftp, vsftpd234'
+_844
+"-----------"
+"-----------"
+'Goal: root_shell'
+'Goals: '
+'InitialState: '
+'StartingConfigs: '
+'Input: ssh, passwords'
+'Description: ssh-login-root'
+'Output: root_shell'
+_548
+"-----------"
+"-----------"
+'Goal: ssh'
+'Goals: passwords'
+'InitialState: root_shell'
+'StartingConfigs: '
+'Input: '
+'Description: scan-ssh'
+'Output: ssh, openssh76p1'
+_898
+"-----------"
+"-----------"
+'Goal: passwords'
+'Goals: '
+'InitialState: root_shell, ssh, openssh76p1'
+'StartingConfigs: '
+'Input: hashed_passwords'
+'Description: crack-hashes'
+'Output: passwords'
+_1192
+"-----------"
+"-----------"
+'Goal: hashed_passwords'
+'Goals: '
+'InitialState: root_shell, ssh, openssh76p1, passwords'
+'StartingConfigs: '
+'Input: user_shell'
+'Description: exposed-shadow-file'
+'Output: hashed_passwords'
+_1472
+"-----------"
+"-----------"
+'Goal: user_shell'
+'Goals: '
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords'
+'StartingConfigs: '
+'Input: ssh, user_list, passwords'
+'Description: ssh-login-user'
+'Output: user_shell'
+_1762
+"-----------"
+"-----------"
+'Goal: user_list'
+'Goals: '
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell'
+'StartingConfigs: '
+'Input: openssh76p1'
+'Description: enumerate-users'
+'Output: user_list'
+_2136
+"-----------"
+"-----------"
+'Goal: user_shell'
+'Goals: '
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords'
+'StartingConfigs: '
+'Input: php_webapp, web_admin_access'
+'Description: exec-custom-php'
+'Output: user_shell'
+_1762
+"-----------"
+"-----------"
+'Goal: php_webapp'
+'Goals: web_admin_access'
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell'
+'StartingConfigs: '
+'Input: http'
+'Description: find-login-page'
+'Output: php_webapp, login_page'
+_2082
+"-----------"
+"-----------"
+'Goal: http'
+'Goals: web_admin_access'
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell, php_webapp, login_page'
+'StartingConfigs: '
+'Input: '
+'Description: scan-http'
+'Output: http'
+_2556
+"-----------"
+"-----------"
+'Goal: web_admin_access'
+'Goals: '
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell, php_webapp, login_page, http'
+'StartingConfigs: '
+'Input: login_page, web_user_list, web_passwords'
+'Description: web-login-admin'
+'Output: web_admin_access'
+_2874
+"-----------"
+"-----------"
+'Goal: web_user_list'
+'Goals: web_passwords'
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell, php_webapp, login_page, http, web_admin_access'
+'StartingConfigs: '
+'Input: db_access'
+'Description: db-query-users'
+'Output: web_user_list, hashed_web_passwords'
+_3240
+"-----------"
+"-----------"
+'Goal: db_access'
+'Goals: web_passwords'
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell, php_webapp, login_page, http, web_admin_access, web_user_list, hashed_web_passwords'
+'StartingConfigs: '
+'Input: login_page, bad_sql'
+'Description: sql-injection'
+'Output: db_access'
+_3640
+"-----------"
+"-----------"
+'Goal: bad_sql'
+'Goals: web_passwords'
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell, php_webapp, login_page, http, web_admin_access, web_user_list, hashed_web_passwords, db_access'
+'StartingConfigs: '
+'Input: http'
+'Description: find-login-page'
+'Output: php_webapp, login_page, bad_sql'
+_4014
+"-----------"
+"-----------"
+'Goal: web_passwords'
+'Goals: '
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell, http, web_admin_access, web_user_list, hashed_web_passwords, db_access, php_webapp, login_page, bad_sql'
+'StartingConfigs: '
+'Input: hashed_web_passwords'
+'Description: crack-hashes'
+'Output: web_passwords'
+_4540
+"-----------"
+"-----------"
+'Goal: php_webapp'
+'Goals: web_admin_access'
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell'
+'StartingConfigs: '
+'Input: http'
+'Description: find-login-page'
+'Output: php_webapp, login_page, bad_sql'
+_2082
+"-----------"
+"-----------"
+'Goal: http'
+'Goals: web_admin_access'
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell, php_webapp, login_page, bad_sql'
+'StartingConfigs: '
+'Input: '
+'Description: scan-http'
+'Output: http'
+_2568
+"-----------"
+"-----------"
+'Goal: web_admin_access'
+'Goals: '
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell, php_webapp, login_page, bad_sql, http'
+'StartingConfigs: '
+'Input: login_page, web_user_list, web_passwords'
+'Description: web-login-admin'
+'Output: web_admin_access'
+_2894
+"-----------"
+"-----------"
+'Goal: web_user_list'
+'Goals: web_passwords'
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell, php_webapp, login_page, bad_sql, http, web_admin_access'
+'StartingConfigs: '
+'Input: db_access'
+'Description: db-query-users'
+'Output: web_user_list, hashed_web_passwords'
+_3268
+"-----------"
+"-----------"
+'Goal: db_access'
+'Goals: web_passwords'
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell, php_webapp, login_page, bad_sql, http, web_admin_access, web_user_list, hashed_web_passwords'
+'StartingConfigs: '
+'Input: login_page, bad_sql'
+'Description: sql-injection'
+'Output: db_access'
+_3676
+"-----------"
+"-----------"
+'Goal: web_passwords'
+'Goals: '
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords, user_shell, php_webapp, login_page, bad_sql, http, web_admin_access, web_user_list, hashed_web_passwords, db_access'
+'StartingConfigs: '
+'Input: hashed_web_passwords'
+'Description: crack-hashes'
+'Output: web_passwords'
+_4046
+"-----------"
+"-----------"
+'Goal: hashed_passwords'
+'Goals: '
+'InitialState: root_shell, ssh, openssh76p1, passwords'
+'StartingConfigs: '
+'Input: ftp'
+'Description: exposed-shadow-file'
+'Output: hashed_passwords'
+_1472
+"-----------"
+"-----------"
+'Goal: ftp'
+'Goals: '
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords'
+'StartingConfigs: '
+'Input: '
+'Description: scan-ftp'
+'Output: ftp, vsftpd234'
+_1760
+"-----------"
+"-----------"
+'Goal: ftp'
+'Goals: '
+'InitialState: root_shell, ssh, openssh76p1, passwords, hashed_passwords'
+'StartingConfigs: '
+'Input: '
+'Description: scan-ftp'
+'Output: ftp, vsftpd303'
+_1760
+"-----------"
+"-----------"
+'Goal: root_shell'
+'Goals: '
+'InitialState: '
+'StartingConfigs: '
+'Input: user_shell, setuid_binary, assumed_PATH_var'
+'Description: custom-PATH-setuid'
+'Output: root_shell'
+_548
+"-----------"
+"-----------"
+'Goal: user_shell'
+'Goals: setuid_binary, assumed_PATH_var'
+'InitialState: root_shell'
+'StartingConfigs: '
+'Input: ssh, user_list, passwords'
+'Description: ssh-login-user'
+'Output: user_shell'
+_846
+"-----------"
+"-----------"
+'Goal: ssh'
+'Goals: user_list, passwords, setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell'
+'StartingConfigs: '
+'Input: '
+'Description: scan-ssh'
+'Output: ssh, openssh76p1'
+_1216
+"-----------"
+"-----------"
+'Goal: user_list'
+'Goals: passwords, setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, ssh, openssh76p1'
+'StartingConfigs: '
+'Input: openssh76p1'
+'Description: enumerate-users'
+'Output: user_list'
+_1528
+"-----------"
+"-----------"
+'Goal: passwords'
+'Goals: setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, ssh, openssh76p1, user_list'
+'StartingConfigs: '
+'Input: hashed_passwords'
+'Description: crack-hashes'
+'Output: passwords'
+_1814
+"-----------"
+"-----------"
+'Goal: hashed_passwords'
+'Goals: setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, ssh, openssh76p1, user_list, passwords'
+'StartingConfigs: '
+'Input: user_shell'
+'Description: exposed-shadow-file'
+'Output: hashed_passwords'
+_2120
+"-----------"
+"-----------"
+'Goal: setuid_binary'
+'Goals: assumed_PATH_var'
+'InitialState: root_shell, user_shell, ssh, openssh76p1, user_list, passwords, hashed_passwords'
+'StartingConfigs: '
+'Input: user_shell'
+'Description: scan-for-setuid-binary'
+'Output: setuid_binary'
+_2422
+"-----------"
+"-----------"
+'Goal: assumed_PATH_var'
+'Goals: '
+'InitialState: root_shell, user_shell, ssh, openssh76p1, user_list, passwords, hashed_passwords, setuid_binary'
+'StartingConfigs: '
+'Input: setuid_binary'
+'Description: examine-setuid-binary'
+'Output: assumed_PATH_var'
+_2730
+"-----------"
+"-----------"
+'Goal: hashed_passwords'
+'Goals: setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, ssh, openssh76p1, user_list, passwords'
+'StartingConfigs: '
+'Input: ftp'
+'Description: exposed-shadow-file'
+'Output: hashed_passwords'
+_2120
+"-----------"
+"-----------"
+'Goal: ftp'
+'Goals: setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, ssh, openssh76p1, user_list, passwords, hashed_passwords'
+'StartingConfigs: '
+'Input: '
+'Description: scan-ftp'
+'Output: ftp, vsftpd234'
+_2432
+"-----------"
+"-----------"
+'Goal: setuid_binary'
+'Goals: assumed_PATH_var'
+'InitialState: root_shell, user_shell, ssh, openssh76p1, user_list, passwords, hashed_passwords, ftp, vsftpd234'
+'StartingConfigs: '
+'Input: user_shell'
+'Description: scan-for-setuid-binary'
+'Output: setuid_binary'
+_2784
+"-----------"
+"-----------"
+'Goal: assumed_PATH_var'
+'Goals: '
+'InitialState: root_shell, user_shell, ssh, openssh76p1, user_list, passwords, hashed_passwords, ftp, vsftpd234, setuid_binary'
+'StartingConfigs: '
+'Input: setuid_binary'
+'Description: examine-setuid-binary'
+'Output: assumed_PATH_var'
+_3108
+"-----------"
+"-----------"
+'Goal: ftp'
+'Goals: setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, ssh, openssh76p1, user_list, passwords, hashed_passwords'
+'StartingConfigs: '
+'Input: '
+'Description: scan-ftp'
+'Output: ftp, vsftpd303'
+_2432
+"-----------"
+"-----------"
+'Goal: setuid_binary'
+'Goals: assumed_PATH_var'
+'InitialState: root_shell, user_shell, ssh, openssh76p1, user_list, passwords, hashed_passwords, ftp, vsftpd303'
+'StartingConfigs: '
+'Input: user_shell'
+'Description: scan-for-setuid-binary'
+'Output: setuid_binary'
+_2784
+"-----------"
+"-----------"
+'Goal: assumed_PATH_var'
+'Goals: '
+'InitialState: root_shell, user_shell, ssh, openssh76p1, user_list, passwords, hashed_passwords, ftp, vsftpd303, setuid_binary'
+'StartingConfigs: '
+'Input: setuid_binary'
+'Description: examine-setuid-binary'
+'Output: assumed_PATH_var'
+_3108
+"-----------"
+"-----------"
+'Goal: user_shell'
+'Goals: setuid_binary, assumed_PATH_var'
+'InitialState: root_shell'
+'StartingConfigs: '
+'Input: php_webapp, web_admin_access'
+'Description: exec-custom-php'
+'Output: user_shell'
+_846
+"-----------"
+"-----------"
+'Goal: php_webapp'
+'Goals: web_admin_access, setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell'
+'StartingConfigs: '
+'Input: http'
+'Description: find-login-page'
+'Output: php_webapp, login_page'
+_1138
+"-----------"
+"-----------"
+'Goal: http'
+'Goals: web_admin_access, setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, php_webapp, login_page'
+'StartingConfigs: '
+'Input: '
+'Description: scan-http'
+'Output: http'
+_1584
+"-----------"
+"-----------"
+'Goal: web_admin_access'
+'Goals: setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, php_webapp, login_page, http'
+'StartingConfigs: '
+'Input: login_page, web_user_list, web_passwords'
+'Description: web-login-admin'
+'Output: web_admin_access'
+_1874
+"-----------"
+"-----------"
+'Goal: web_user_list'
+'Goals: web_passwords, setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, php_webapp, login_page, http, web_admin_access'
+'StartingConfigs: '
+'Input: db_access'
+'Description: db-query-users'
+'Output: web_user_list, hashed_web_passwords'
+_2212
+"-----------"
+"-----------"
+'Goal: db_access'
+'Goals: web_passwords, setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, php_webapp, login_page, http, web_admin_access, web_user_list, hashed_web_passwords'
+'StartingConfigs: '
+'Input: login_page, bad_sql'
+'Description: sql-injection'
+'Output: db_access'
+_2584
+"-----------"
+"-----------"
+'Goal: bad_sql'
+'Goals: web_passwords, setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, php_webapp, login_page, http, web_admin_access, web_user_list, hashed_web_passwords, db_access'
+'StartingConfigs: '
+'Input: http'
+'Description: find-login-page'
+'Output: php_webapp, login_page, bad_sql'
+_2930
+"-----------"
+"-----------"
+'Goal: web_passwords'
+'Goals: setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, http, web_admin_access, web_user_list, hashed_web_passwords, db_access, php_webapp, login_page, bad_sql'
+'StartingConfigs: '
+'Input: hashed_web_passwords'
+'Description: crack-hashes'
+'Output: web_passwords'
+_3428
+"-----------"
+"-----------"
+'Goal: setuid_binary'
+'Goals: assumed_PATH_var'
+'InitialState: root_shell, user_shell, http, web_admin_access, web_user_list, hashed_web_passwords, db_access, php_webapp, login_page, bad_sql, web_passwords'
+'StartingConfigs: '
+'Input: user_shell'
+'Description: scan-for-setuid-binary'
+'Output: setuid_binary'
+_3772
+"-----------"
+"-----------"
+'Goal: assumed_PATH_var'
+'Goals: '
+'InitialState: root_shell, user_shell, http, web_admin_access, web_user_list, hashed_web_passwords, db_access, php_webapp, login_page, bad_sql, web_passwords, setuid_binary'
+'StartingConfigs: '
+'Input: setuid_binary'
+'Description: examine-setuid-binary'
+'Output: assumed_PATH_var'
+_4118
+"-----------"
+"-----------"
+'Goal: php_webapp'
+'Goals: web_admin_access, setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell'
+'StartingConfigs: '
+'Input: http'
+'Description: find-login-page'
+'Output: php_webapp, login_page, bad_sql'
+_1138
+"-----------"
+"-----------"
+'Goal: http'
+'Goals: web_admin_access, setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, php_webapp, login_page, bad_sql'
+'StartingConfigs: '
+'Input: '
+'Description: scan-http'
+'Output: http'
+_1596
+"-----------"
+"-----------"
+'Goal: web_admin_access'
+'Goals: setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, php_webapp, login_page, bad_sql, http'
+'StartingConfigs: '
+'Input: login_page, web_user_list, web_passwords'
+'Description: web-login-admin'
+'Output: web_admin_access'
+_1896
+"-----------"
+"-----------"
+'Goal: web_user_list'
+'Goals: web_passwords, setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, php_webapp, login_page, bad_sql, http, web_admin_access'
+'StartingConfigs: '
+'Input: db_access'
+'Description: db-query-users'
+'Output: web_user_list, hashed_web_passwords'
+_2242
+"-----------"
+"-----------"
+'Goal: db_access'
+'Goals: web_passwords, setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, php_webapp, login_page, bad_sql, http, web_admin_access, web_user_list, hashed_web_passwords'
+'StartingConfigs: '
+'Input: login_page, bad_sql'
+'Description: sql-injection'
+'Output: db_access'
+_2624
+"-----------"
+"-----------"
+'Goal: web_passwords'
+'Goals: setuid_binary, assumed_PATH_var'
+'InitialState: root_shell, user_shell, php_webapp, login_page, bad_sql, http, web_admin_access, web_user_list, hashed_web_passwords, db_access'
+'StartingConfigs: '
+'Input: hashed_web_passwords'
+'Description: crack-hashes'
+'Output: web_passwords'
+_2966
+"-----------"
+"-----------"
+'Goal: setuid_binary'
+'Goals: assumed_PATH_var'
+'InitialState: root_shell, user_shell, php_webapp, login_page, bad_sql, http, web_admin_access, web_user_list, hashed_web_passwords, db_access, web_passwords'
+'StartingConfigs: '
+'Input: user_shell'
+'Description: scan-for-setuid-binary'
+'Output: setuid_binary'
+_3310
+"-----------"
+"-----------"
+'Goal: assumed_PATH_var'
+'Goals: '
+'InitialState: root_shell, user_shell, php_webapp, login_page, bad_sql, http, web_admin_access, web_user_list, hashed_web_passwords, db_access, web_passwords, setuid_binary'
+'StartingConfigs: '
+'Input: setuid_binary'
+'Description: examine-setuid-binary'
+'Output: assumed_PATH_var'
+_3656
+"-----------"
+[([apache-[modules-(exists,["libapache2-mod-php"])],mysql-[db-(exists,["logindb1"]),root-(only,[generatePassword])],openssh-[allowrootlogin-(only,["Yes"]),version-(only,["7.6p1"])],php-[deployments-(exists,["loginpage1","loginpage1-badsql"])],users-[logins-(exists,[generateUsername]),passwords-(exists,[generatePassword]),root-(only,[generatePassword])],vsftpd-[version-(only,["2.3.4"])]],[([ssh,passwords],'ssh-login-root',[root_shell]),([],'scan-ssh',[ssh,openssh76p1]),([hashed_passwords],'crack-hashes',[passwords]),([user_shell],'exposed-shadow-file',[hashed_passwords]),([php_webapp,web_admin_access],'exec-custom-php',[user_shell]),([http],'find-login-page',[php_webapp,login_page]),([],'scan-http',[http]),([login_page,web_user_list,web_passwords],'web-login-admin',[web_admin_access]),([db_access],'db-query-users',[web_user_list,hashed_web_passwords]),([login_page,bad_sql],'sql-injection',[db_access]),([http],'find-login-page',[php_webapp,login_page,bad_sql]),([hashed_web_passwords],'crack-hashes',[web_passwords]),([ssh,passwords],'ssh-login-root',[root_shell]),([],'scan-ssh',[ssh,openssh76p1]),([hashed_passwords],'crack-hashes',[passwords]),([user_shell],'exposed-shadow-file',[hashed_passwords]),([php_webapp,web_admin_access],'exec-custom-php',[user_shell]),([http],'find-login-page',[php_webapp,login_page,bad_sql]),([],'scan-http',[http]),([login_page,web_user_list,web_passwords],'web-login-admin',[web_admin_access]),([db_access],'db-query-users',[web_user_list,hashed_web_passwords]),([login_page,bad_sql],'sql-injection',[db_access]),([hashed_web_passwords],'crack-hashes',[web_passwords]),([user_shell,setuid_binary,assumed_PATH_var],'custom-PATH-setuid',[root_shell]),([php_webapp,web_admin_access],'exec-custom-php',[user_shell]),([http],'find-login-page',[php_webapp,login_page]),([],'scan-http',[http]),([login_page,web_user_list,web_passwords],'web-login-admin',[web_admin_access]),([db_access],'db-query-users',[web_user_list,hashed_web_passwords]),([login_page,bad_sql],'sql-injection',[db_access]),([http],'find-login-page',[php_webapp,login_page,bad_sql]),([hashed_web_passwords],'crack-hashes',[web_passwords]),([user_shell],'scan-for-setuid-binary',[setuid_binary]),([setuid_binary],'examine-setuid-binary',[assumed_PATH_var]),([user_shell,setuid_binary,assumed_PATH_var],'custom-PATH-setuid',[root_shell]),([php_webapp,web_admin_access],'exec-custom-php',[user_shell]),([http],'find-login-page',[php_webapp,login_page,bad_sql]),([],'scan-http',[http]),([login_page,web_user_list,web_passwords],'web-login-admin',[web_admin_access]),([db_access],'db-query-users',[web_user_list,hashed_web_passwords]),([login_page,bad_sql],'sql-injection',[db_access]),([hashed_web_passwords],'crack-hashes',[web_passwords]),([user_shell],'scan-for-setuid-binary',[setuid_binary]),([setuid_binary],'examine-setuid-binary',[assumed_PATH_var]),([ssh,passwords],'ssh-login-root',[root_shell]),([],'scan-ssh',[ssh,openssh76p1]),([hashed_passwords],'crack-hashes',[passwords]),([user_shell],'exposed-shadow-file',[hashed_passwords]),([ssh,user_list,passwords],'ssh-login-user',[user_shell]),([openssh76p1],'enumerate-users',[user_list]),([ssh,passwords],'ssh-login-root',[root_shell]),([],'scan-ssh',[ssh,openssh76p1]),([hashed_passwords],'crack-hashes',[passwords]),([ftp],'exposed-shadow-file',[hashed_passwords]),([],'scan-ftp',[ftp,vsftpd234]),([user_shell,setuid_binary,assumed_PATH_var],'custom-PATH-setuid',[root_shell]),([ssh,user_list,passwords],'ssh-login-user',[user_shell]),([],'scan-ssh',[ssh,openssh76p1]),([openssh76p1],'enumerate-users',[user_list]),([hashed_passwords],'crack-hashes',[passwords]),([ftp],'exposed-shadow-file',[hashed_passwords]),([],'scan-ftp',[ftp,vsftpd234]),([user_shell],'scan-for-setuid-binary',[setuid_binary]),([setuid_binary],'examine-setuid-binary',[assumed_PATH_var]),([vsftpd234],'vsftpd-backdoor',[root_shell]),([],'scan-ftp',[ftp,vsftpd234])]),([openssh-[allowrootlogin-(only,["Yes"]),version-(only,["7.6p1"])],users-[logins-(exists,[generateUsername]),passwords-(exists,[generatePassword]),root-(only,[generatePassword])],vsftpd-[version-(only,["3.0.3"])]],[([ssh,passwords],'ssh-login-root',[root_shell]),([],'scan-ssh',[ssh,openssh76p1]),([hashed_passwords],'crack-hashes',[passwords]),([ftp],'exposed-shadow-file',[hashed_passwords]),([],'scan-ftp',[ftp,vsftpd303]),([user_shell,setuid_binary,assumed_PATH_var],'custom-PATH-setuid',[root_shell]),([ssh,user_list,passwords],'ssh-login-user',[user_shell]),([],'scan-ssh',[ssh,openssh76p1]),([openssh76p1],'enumerate-users',[user_list]),([hashed_passwords],'crack-hashes',[passwords]),([user_shell],'exposed-shadow-file',[hashed_passwords]),([user_shell],'scan-for-setuid-binary',[setuid_binary]),([setuid_binary],'examine-setuid-binary',[assumed_PATH_var]),([user_shell,setuid_binary,assumed_PATH_var],'custom-PATH-setuid',[root_shell]),([ssh,user_list,passwords],'ssh-login-user',[user_shell]),([],'scan-ssh',[ssh,openssh76p1]),([openssh76p1],'enumerate-users',[user_list]),([hashed_passwords],'crack-hashes',[passwords]),([ftp],'exposed-shadow-file',[hashed_passwords]),([],'scan-ftp',[ftp,vsftpd303]),([user_shell],'scan-for-setuid-binary',[setuid_binary]),([setuid_binary],'examine-setuid-binary',[assumed_PATH_var])])]Creating range b731f351-3d03-4e1c-9421-bdac77c7a01b
+----
+'24af7e60-c6c0-4d5b-ba10-7ecaca8923e7'
+'Config: '[apache-[modules-(exists,["libapache2-mod-php"])],mysql-[db-(exists,["logindb1"]),root-(only,["ihbmi"])],openssh-[allowrootlogin-(only,["Yes"]),version-(only,["7.6p1"])],php-[deployments-(exists,["loginpage1","loginpage1-badsql"])],users-[logins-(exists,["guest"]),passwords-(exists,["u2%AP"]),root-(only,["W!wV5"])],vsftpd-[version-(only,["2.3.4"])]]
+[ssh,passwords],'ssh-login-root',[root_shell]
+[],'scan-ssh',[ssh,openssh76p1]
+[hashed_passwords],'crack-hashes',[passwords]
+[user_shell],'exposed-shadow-file',[hashed_passwords]
+[php_webapp,web_admin_access],'exec-custom-php',[user_shell]
+[http],'find-login-page',[php_webapp,login_page]
+[],'scan-http',[http]
+[login_page,web_user_list,web_passwords],'web-login-admin',[web_admin_access]
+[db_access],'db-query-users',[web_user_list,hashed_web_passwords]
+[login_page,bad_sql],'sql-injection',[db_access]
+[http],'find-login-page',[php_webapp,login_page,bad_sql]
+[hashed_web_passwords],'crack-hashes',[web_passwords]
+[ssh,passwords],'ssh-login-root',[root_shell]
+[],'scan-ssh',[ssh,openssh76p1]
+[hashed_passwords],'crack-hashes',[passwords]
+[user_shell],'exposed-shadow-file',[hashed_passwords]
+[php_webapp,web_admin_access],'exec-custom-php',[user_shell]
+[http],'find-login-page',[php_webapp,login_page,bad_sql]
+[],'scan-http',[http]
+[login_page,web_user_list,web_passwords],'web-login-admin',[web_admin_access]
+[db_access],'db-query-users',[web_user_list,hashed_web_passwords]
+[login_page,bad_sql],'sql-injection',[db_access]
+[hashed_web_passwords],'crack-hashes',[web_passwords]
+[user_shell,setuid_binary,assumed_PATH_var],'custom-PATH-setuid',[root_shell]
+[php_webapp,web_admin_access],'exec-custom-php',[user_shell]
+[http],'find-login-page',[php_webapp,login_page]
+[],'scan-http',[http]
+[login_page,web_user_list,web_passwords],'web-login-admin',[web_admin_access]
+[db_access],'db-query-users',[web_user_list,hashed_web_passwords]
+[login_page,bad_sql],'sql-injection',[db_access]
+[http],'find-login-page',[php_webapp,login_page,bad_sql]
+[hashed_web_passwords],'crack-hashes',[web_passwords]
+[user_shell],'scan-for-setuid-binary',[setuid_binary]
+[setuid_binary],'examine-setuid-binary',[assumed_PATH_var]
+[user_shell,setuid_binary,assumed_PATH_var],'custom-PATH-setuid',[root_shell]
+[php_webapp,web_admin_access],'exec-custom-php',[user_shell]
+[http],'find-login-page',[php_webapp,login_page,bad_sql]
+[],'scan-http',[http]
+[login_page,web_user_list,web_passwords],'web-login-admin',[web_admin_access]
+[db_access],'db-query-users',[web_user_list,hashed_web_passwords]
+[login_page,bad_sql],'sql-injection',[db_access]
+[hashed_web_passwords],'crack-hashes',[web_passwords]
+[user_shell],'scan-for-setuid-binary',[setuid_binary]
+[setuid_binary],'examine-setuid-binary',[assumed_PATH_var]
+[ssh,passwords],'ssh-login-root',[root_shell]
+[],'scan-ssh',[ssh,openssh76p1]
+[hashed_passwords],'crack-hashes',[passwords]
+[user_shell],'exposed-shadow-file',[hashed_passwords]
+[ssh,user_list,passwords],'ssh-login-user',[user_shell]
+[openssh76p1],'enumerate-users',[user_list]
+[ssh,passwords],'ssh-login-root',[root_shell]
+[],'scan-ssh',[ssh,openssh76p1]
+[hashed_passwords],'crack-hashes',[passwords]
+[ftp],'exposed-shadow-file',[hashed_passwords]
+[],'scan-ftp',[ftp,vsftpd234]
+[user_shell,setuid_binary,assumed_PATH_var],'custom-PATH-setuid',[root_shell]
+[ssh,user_list,passwords],'ssh-login-user',[user_shell]
+[],'scan-ssh',[ssh,openssh76p1]
+[openssh76p1],'enumerate-users',[user_list]
+[hashed_passwords],'crack-hashes',[passwords]
+[ftp],'exposed-shadow-file',[hashed_passwords]
+[],'scan-ftp',[ftp,vsftpd234]
+[user_shell],'scan-for-setuid-binary',[setuid_binary]
+[setuid_binary],'examine-setuid-binary',[assumed_PATH_var]
+[vsftpd234],'vsftpd-backdoor',[root_shell]
+[],'scan-ftp',[ftp,vsftpd234]
+
+----
+'66ea9d5c-68c5-489b-96af-276fd90148ab'
+'Config: '[openssh-[allowrootlogin-(only,["Yes"]),version-(only,["7.6p1"])],users-[logins-(exists,["john"]),passwords-(exists,["2g266"]),root-(only,["H!EOZ"])],vsftpd-[version-(only,["3.0.3"])]]
+[ssh,passwords],'ssh-login-root',[root_shell]
+[],'scan-ssh',[ssh,openssh76p1]
+[hashed_passwords],'crack-hashes',[passwords]
+[ftp],'exposed-shadow-file',[hashed_passwords]
+[],'scan-ftp',[ftp,vsftpd303]
+[user_shell,setuid_binary,assumed_PATH_var],'custom-PATH-setuid',[root_shell]
+[ssh,user_list,passwords],'ssh-login-user',[user_shell]
+[],'scan-ssh',[ssh,openssh76p1]
+[openssh76p1],'enumerate-users',[user_list]
+[hashed_passwords],'crack-hashes',[passwords]
+[user_shell],'exposed-shadow-file',[hashed_passwords]
+[user_shell],'scan-for-setuid-binary',[setuid_binary]
+[setuid_binary],'examine-setuid-binary',[assumed_PATH_var]
+[user_shell,setuid_binary,assumed_PATH_var],'custom-PATH-setuid',[root_shell]
+[ssh,user_list,passwords],'ssh-login-user',[user_shell]
+[],'scan-ssh',[ssh,openssh76p1]
+[openssh76p1],'enumerate-users',[user_list]
+[hashed_passwords],'crack-hashes',[passwords]
+[ftp],'exposed-shadow-file',[hashed_passwords]
+[],'scan-ftp',[ftp,vsftpd303]
+[user_shell],'scan-for-setuid-binary',[setuid_binary]
+[setuid_binary],'examine-setuid-binary',[assumed_PATH_var]
+
+
+Creating lattice 24af7e60-c6c0-4d5b-ba10-7ecaca8923e7 in range b731f351-3d03-4e1c-9421-bdac77c7a01b
+Writing /Users/hpistor/Projects/SeniorResearch/alpaca/ranges/b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7
+'/Users/hpistor/Projects/SeniorResearch/alpaca/ansible/roles'
+Writing /Users/hpistor/Projects/SeniorResearch/alpaca/ranges/b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/playbook.yml
+Creating lattice 66ea9d5c-68c5-489b-96af-276fd90148ab in range b731f351-3d03-4e1c-9421-bdac77c7a01b
+Writing /Users/hpistor/Projects/SeniorResearch/alpaca/ranges/b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab
+'/Users/hpistor/Projects/SeniorResearch/alpaca/ansible/roles'
+Writing /Users/hpistor/Projects/SeniorResearch/alpaca/ranges/b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/playbook.yml
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/lattice.gv (deflated 96%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/run_packer.sh (deflated 12%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/main.tf (deflated 73%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/terraform.tfvars (deflated 11%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/vsftpd/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/vsftpd/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/vsftpd/tasks/main.yml (deflated 44%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/vsftpd/handlers/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/vsftpd/handlers/main.yml (deflated 18%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/composer/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/composer/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/composer/tasks/main.yml (deflated 57%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/openssh/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/openssh/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/openssh/tasks/main.yml (deflated 30%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/openssh/handlers/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/openssh/handlers/main.yml (deflated 15%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/tasks/main.yml (deflated 57%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/meta/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/meta/main.yml (deflated 27%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql.tar.gz (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Database/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Database/Connection.php (deflated 57%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Renderer.php (deflated 64%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Models/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Models/Access.php (deflated 53%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Controllers/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Controllers/AccessController.php (deflated 66%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Controllers/MainController.php (deflated 52%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/index.php (deflated 43%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/routes.php (deflated 67%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/access/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/access/login.php (deflated 71%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/layout.php (deflated 68%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/main/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/main/home.php (deflated 65%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/main/error.php (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/composer.json (deflated 39%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/mysql/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/mysql/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/mysql/tasks/main.yml (deflated 59%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/mysql/files/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/mysql/files/logindb1.sql.gz (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/mysql/files/logindb1.sql (deflated 58%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/mysql/handlers/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/mysql/handlers/main.yml (deflated 17%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/users/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/users/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/users/tasks/tasks.yml (deflated 53%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/apache/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/apache/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/apache/tasks/main.yml (deflated 52%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/apache/handlers/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/apache/handlers/main.yml (deflated 46%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/git/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/git/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/roles/git/tasks/main.yml (deflated 11%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/lattice.png (deflated 5%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/variables.tf (deflated 68%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/playbook.yml (deflated 60%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/packer/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/packer/setup_2.sh (deflated 49%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/packer/README.md (deflated 10%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/packer/http/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/packer/http/preseed.cfg (deflated 61%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/packer/setup_1.sh (deflated 52%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/24af7e60-c6c0-4d5b-ba10-7ecaca8923e7/packer/ubuntu_bionic.json (deflated 58%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/lattice.gv (deflated 93%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/run_packer.sh (deflated 12%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/main.tf (deflated 73%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/terraform.tfvars (deflated 11%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/vsftpd/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/vsftpd/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/vsftpd/tasks/main.yml (deflated 44%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/vsftpd/handlers/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/vsftpd/handlers/main.yml (deflated 18%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/composer/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/composer/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/composer/tasks/main.yml (deflated 57%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/openssh/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/openssh/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/openssh/tasks/main.yml (deflated 30%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/openssh/handlers/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/openssh/handlers/main.yml (deflated 15%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/tasks/main.yml (deflated 57%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/meta/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/meta/main.yml (deflated 27%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql.tar.gz (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Database/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Database/Connection.php (deflated 57%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Renderer.php (deflated 64%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Models/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Models/Access.php (deflated 53%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Controllers/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Controllers/AccessController.php (deflated 66%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/app/Controllers/MainController.php (deflated 52%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/index.php (deflated 43%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/routes.php (deflated 67%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/access/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/access/login.php (deflated 71%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/layout.php (deflated 68%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/main/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/main/home.php (deflated 65%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/views/main/error.php (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/php/files/loginpage1-badsql/var/www/html/loginpage1-badsql/composer.json (deflated 39%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/mysql/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/mysql/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/mysql/tasks/main.yml (deflated 59%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/mysql/files/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/mysql/files/logindb1.sql.gz (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/mysql/files/logindb1.sql (deflated 58%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/mysql/handlers/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/mysql/handlers/main.yml (deflated 17%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/users/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/users/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/users/tasks/tasks.yml (deflated 53%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/apache/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/apache/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/apache/tasks/main.yml (deflated 52%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/apache/handlers/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/apache/handlers/main.yml (deflated 46%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/git/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/git/tasks/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/roles/git/tasks/main.yml (deflated 11%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/lattice.png (deflated 7%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/variables.tf (deflated 68%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/playbook.yml (deflated 53%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/packer/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/packer/setup_2.sh (deflated 49%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/packer/README.md (deflated 10%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/packer/http/ (stored 0%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/packer/http/preseed.cfg (deflated 61%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/packer/setup_1.sh (deflated 52%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/66ea9d5c-68c5-489b-96af-276fd90148ab/packer/ubuntu_bionic.json (deflated 58%)
+  adding: b731f351-3d03-4e1c-9421-bdac77c7a01b/range_metadata.json (deflated 91%)

@@ -28,7 +28,8 @@ createAllLatticesFromIGS(InitialState, Goals, Lattices) :-
     % repeatedly merge these configs until no more merging is possible
     groupPathsByConfigs(Paths, LatticePaths),
     % now keep just one config and all paths, per lattice
-    maplist(appendPathsIntoLattice, LatticePaths, Lattices).
+    maplist(appendPathsIntoLattice, LatticePaths, Lattices), print(Lattices)
+    .
 
 % keep single config (all paths will share this same config), append all paths into a set of vulns
 appendPathsIntoLattice([], []).
@@ -46,6 +47,22 @@ achieveGoal([Goal|Goals], InitialState, StartingConfigs, AcceptedConfigs, [(Inpu
     subtract(Input, InitialState, NewInput),
     union(NewInput, Goals, NewGoals),
     union(InitialState, Output, NewState),
+    print("-----------"), nl ,
+	format(atom(PrintGoal), "Goal: ~s", [Goal]),
+    atomic_list_concat(Goals, ", ", GoalsAtom), atom_string(GoalsAtom, GoalsString),
+    format(atom(PrintGoals), "Goals: ~s", [GoalsString]),
+    atomic_list_concat(InitialState, ", ", InitialStateAtom), atom_string(InitialStateAtom, InitialStateString),
+    format(atom(PrintInitialState), "InitialState: ~s", [InitialStateString]),
+    atomic_list_concat(StartingConfigs, ", ", StartingConfigsAtom), atom_string(StartingConfigsAtom, StartingConfigsString),
+    format(atom(PrintStartingConfigs), "StartingConfigs: ~s", [StartingConfigsString]),
+    atomic_list_concat(Input, ", ", InputAtom), atom_string(InputAtom, InputString),
+    format(atom(PrintInput), "Input: ~s", [InputString]),
+    atomic_list_concat(Output, ", ", OutputAtom), atom_string(OutputAtom, OutputString),
+    format(atom(PrintOutput), "Output: ~s", [OutputString]),
+    format(atom(PrintDescription), "Description: ~s", [Description]),
+    print(PrintGoal), nl, print(PrintGoals), nl, print(PrintInitialState), nl, print(PrintStartingConfigs), nl, print(PrintInput), nl, print(PrintDescription), nl, print(PrintOutput), nl, print(Vulns), nl,
+    print("-----------"), nl,
     achieveGoal(NewGoals, NewState, StartingConfigs, NewConfigs, Vulns),
-    checkConfigs(NewConfigs, Configs, AcceptedConfigs).
+    checkConfigs(NewConfigs, Configs, AcceptedConfigs)
+    .
 

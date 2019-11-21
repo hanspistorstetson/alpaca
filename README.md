@@ -56,3 +56,32 @@ Then run the Packer script:
 $ bash run_packer.sh
 </pre>
 
+# TODO
+
+How can we create VM's that are aware of eachother.
+
+I guess to start we can have all them have an end goal of root shell, and have the intermediaries and final have an initial state of user login.
+
+We have to connect them somehow
+
+Make heavy use of using ssh to tunnel traffic probably
+
+For each VM, create a lattice
+
+intial vm -> from [''] -> ['root_shell']
+all othersers -> from ['user_login'] -> ['root_shell]
+
+lock ssh behind ['root_shell'] \* pretty easy, just add "AllowGroups root" to sshd_config
+G
+but how does each vm know the ['user_login'] of the next vm?
+
+MORE GENERAL
+
+- Start with number of machines
+- Create links between machines
+- Create link between initial state and machine
+- create link betwen end state and machine
+
+- gener
+
+* TEMPORARY TITLE: Chupacabra: A Tool for Generating Networked Cyber Ranges
