@@ -7,9 +7,19 @@ outputRange(InitialState, Goal, Params, Lattices) :-
     format(atom(RangeDirRel), "./ranges/~s", [RangeId]),
     absolute_file_name(RangeDirRel, RangeDir),
     make_directory_path(RangeDir),
-    findall((LatticeId, Lattice), (member(Lattice, Lattices), uuid(LatticeId, [version(4)])), LatticesWithIds),
-    outputRangeMetadata(RangeDir, RangeId, InitialState, Goal, Params, LatticesWithIds),
-    printLattices(LatticesWithIds), nl,
+    findall((LatticeId, Lattice),
+            ( member(Lattice, Lattices),
+              uuid(LatticeId, [version(4)])
+            ),
+            LatticesWithIds),
+    outputRangeMetadata(RangeDir,
+                        RangeId,
+                        InitialState,
+                        Goal,
+                        Params,
+                        LatticesWithIds),
+    printLattices(LatticesWithIds),
+    nl,
     maplist(outputLattice(RangeDir, RangeId), LatticesWithIds),
     working_directory(OrigWD, "./ranges"),
     format(atom(Command), "zip -r ~s.zip ~s", [RangeId, RangeId]),
@@ -18,14 +28,20 @@ outputRange(InitialState, Goal, Params, Lattices) :-
 
 outputRangeMetadata(RangeDir, RangeId, InitialState, Goal, Params, LatticesWithIds) :-
     format(atom(RangeMetadataFname), "~s/range_metadata.json", [RangeDir]),
-	open(RangeMetadataFname, write, Stream),
+    open(RangeMetadataFname, write, Stream),
     jsonifyLattices(LatticesWithIds, JsonLattices),
-    json_write(Stream, json([rangeId-RangeId, initialState-InitialState, goal-Goal,
-                             params-json(Params), lattices-JsonLattices])),
+    json_write(Stream,
+               json(
+                    [ rangeId-RangeId,
+                      initialState-InitialState,
+                      goal-Goal,
+                      params-json(Params),
+                      lattices-JsonLattices
+                    ])),
     close(Stream).
 
 jsonifyLattices([], []).
-jsonifyLattices([(LatticeId, (Config,Vulns))|Rest], [json([latticeId-LatticeId, config-JsonConfig, vulns-JsonVulns])|JsonRest]) :-
+jsonifyLattices([(LatticeId, Config, Vulns)|Rest], [json([latticeId-LatticeId, config-JsonConfig, vulns-JsonVulns])|JsonRest]) :-
     jsonifyConfig(Config, JsonConfig),
     jsonifyVulns(Vulns, JsonVulns),
     jsonifyLattices(Rest, JsonRest).
@@ -77,10 +93,10 @@ createTerraformFiles(RangeId, LatticeDir) :-
     format("Writing ~s~n", [TerraformDir]),
     format(atom(TerraformMain), "~s/main.tf", [TerraformDir]),
     format(atom(TerraformVariables), "~s/variables.tf", [TerraformDir]),
-    format(atom(TerraformTFVars), "~s/terraform.tfvars", [TerraformDir]),
+    format(atom(TerraformTFVars), "~s/terraform.auto.tfvars", [TerraformDir]),
     copy_file("./terraform/main.tf", TerraformMain),
     copy_file("./terraform/variables.tf", TerraformVariables),
-    copy_file("./terraform/terraform.tfvars", TerraformTFVars),
+    copy_file("./terraform/terraform.auto.tfvars", TerraformTFVars),
     read_file_to_string("./terraform/vm.tf", BaseString, []),
     format(atom(VMNAME), "vm_~s", [RangeId]),
     re_replace("`VMNAME`"/g, VMNAME, BaseString, FormattedString),

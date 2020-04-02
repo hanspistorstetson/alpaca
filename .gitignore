@@ -9,4 +9,4 @@
 prolog/httpd.log
 .*.swp
 ranges/
-terraform.tfvars
+terraform.auto.tfvars

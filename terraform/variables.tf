@@ -35,11 +35,8 @@ variable "vsphere_vm_disk_label" {
   default = "test_vm_hans_disk.vmdk"
 }
 
-variable "vsphere_16_04_template_name" {
-  default = "terraform_template_ubuntu_16.04"
-}
 variable "vsphere_18_04_template_name" {
-  default = "terraform_template_ubuntu_18.04"
+  default = "ubuntu_18.04.1_terraform"
 }
 
 variable "vsphere_user" {}
