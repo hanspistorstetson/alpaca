@@ -10,3 +10,6 @@ prolog/httpd.log
 .*.swp
 ranges/
 terraform.auto.tfvars
+.ipynb_checkpoints/
+.vscode
+venv
