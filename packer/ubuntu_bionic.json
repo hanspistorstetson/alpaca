@@ -9,9 +9,9 @@
       "sata_port_count": "8",
       "headless": true,
       "http_directory": "packer/http",
-      "iso_checksum": "a5b0ea5918f850124f3d72ef4b85bda82f0fcd02ec721be19c1a6952791c8ee8",
+      "iso_checksum": "73b8d860e421000a6e35fdefbb0ec859b9385b0974cf8089f5d70a87de72f6b9",
       "iso_checksum_type": "sha256",
-      "iso_url": "http://cdimage.ubuntu.com/ubuntu/releases/bionic/release/ubuntu-18.04.1-server-amd64.iso",
+      "iso_url": "https://mirror.bytemark.co.uk/ubuntu-releases/18.04.4/ubuntu-18.04.4-live-server-amd64.iso",
       "shutdown_command": "echo 'shutdown -P now' > shutdown.sh; echo 'vagrant'|sudo -S sh 'shutdown.sh'",
       "ssh_password": "vagrant",
       "ssh_port": 22,
@@ -57,10 +57,13 @@
       "type": "shell"
     },
     {
-        "type": "ansible",
-        "playbook_file": "./playbook.yml",
-        "extra_arguments": ["-e", "ansible_python_interpreter=/usr/bin/python3", "-vvvv"]
+      "type": "ansible",
+      "playbook_file": "./playbook.yml",
+      "extra_arguments": [
+        "-e",
+        "ansible_python_interpreter=/usr/bin/python3",
+        "-vvvv"
+      ]
     }
   ]
 }
-

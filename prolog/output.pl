@@ -1,32 +1,47 @@
-
 :- use_module(library(uuid)).
 :- use_module(library(http/json)).
 
 outputRange(InitialState, Goal, Params, Lattices) :-
     uuid(RangeId, [version(4)]),
     format("Creating range ~s~n", [RangeId]),
-    format(atom(RangeDirRel), "../ranges/~s", [RangeId]),
+    format(atom(RangeDirRel), "./ranges/~s", [RangeId]),
     absolute_file_name(RangeDirRel, RangeDir),
     make_directory_path(RangeDir),
-    findall((LatticeId, Lattice), (member(Lattice, Lattices), uuid(LatticeId, [version(4)])), LatticesWithIds),
-    outputRangeMetadata(RangeDir, RangeId, InitialState, Goal, Params, LatticesWithIds),
-    printLattices(LatticesWithIds), nl,
+    findall((LatticeId, Lattice),
+            ( member(Lattice, Lattices),
+              uuid(LatticeId, [version(4)])
+            ),
+            LatticesWithIds),
+    outputRangeMetadata(RangeDir,
+                        RangeId,
+                        InitialState,
+                        Goal,
+                        Params,
+                        LatticesWithIds),
+    printLattices(LatticesWithIds),
+    nl,
     maplist(outputLattice(RangeDir, RangeId), LatticesWithIds),
-    working_directory(OrigWD, "../ranges"),
+    working_directory(OrigWD, "./ranges"),
     format(atom(Command), "zip -r ~s.zip ~s", [RangeId, RangeId]),
     shell(Command),
     working_directory(_, OrigWD).
 
 outputRangeMetadata(RangeDir, RangeId, InitialState, Goal, Params, LatticesWithIds) :-
     format(atom(RangeMetadataFname), "~s/range_metadata.json", [RangeDir]),
-	open(RangeMetadataFname, write, Stream),
+    open(RangeMetadataFname, write, Stream),
     jsonifyLattices(LatticesWithIds, JsonLattices),
-    json_write(Stream, json([rangeId-RangeId, initialState-InitialState, goal-Goal,
-                             params-json(Params), lattices-JsonLattices])),
+    json_write(Stream,
+               json(
+                    [ rangeId-RangeId,
+                      initialState-InitialState,
+                      goal-Goal,
+                      params-json(Params),
+                      lattices-JsonLattices
+                    ])),
     close(Stream).
 
 jsonifyLattices([], []).
-jsonifyLattices([(LatticeId, (Config,Vulns))|Rest], [json([latticeId-LatticeId, config-JsonConfig, vulns-JsonVulns])|JsonRest]) :-
+jsonifyLattices([(LatticeId, Config, Vulns)|Rest], [json([latticeId-LatticeId, config-JsonConfig, vulns-JsonVulns])|JsonRest]) :-
     jsonifyConfig(Config, JsonConfig),
     jsonifyVulns(Vulns, JsonVulns),
     jsonifyLattices(Rest, JsonRest).
@@ -54,10 +69,10 @@ outputLattice(RangeDir, RangeId, (LatticeId, Lattice)) :-
     make_directory_path(LatticeDir),
     % link packer files
     format(atom(LatticePackerDir), "~s/packer", [LatticeDir]),
-    absolute_file_name("../packer", PackerDir),
+    absolute_file_name("./packer", PackerDir),
     link_file(PackerDir, LatticePackerDir, symbolic),
     format(atom(LatticePackerScript), "~s/run_packer.sh", [LatticeDir]),
-    absolute_file_name("../run_packer.sh", PackerScript),
+    absolute_file_name("./run_packer.sh", PackerScript),
     link_file(PackerScript, LatticePackerScript, symbolic),
     generatePNGFromLattice(LatticeDir, Lattice),
     Lattice = (Configs, _),
@@ -65,7 +80,7 @@ outputLattice(RangeDir, RangeId, (LatticeId, Lattice)) :-
 
 createYamlFiles(Configs, LatticeDir) :-
     format(atom(AnsibleDir), "~s/roles", [LatticeDir]),
-    absolute_file_name("../ansible/roles", ParentAnsibleDir),
+    absolute_file_name("./ansible/roles", ParentAnsibleDir),
     link_file(ParentAnsibleDir, AnsibleDir, symbolic),
     print(ParentAnsibleDir),nl,
 	formatRoles(Configs, Roles),
