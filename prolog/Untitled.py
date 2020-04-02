@@ -115,3 +115,5 @@ for i in range(min(len(paths), 4)):
     sub = 221 + i
     plt.subplot(sub)
     nx.draw(G, with_labels=True)
+
+plt.show()
