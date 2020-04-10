@@ -1,1 +1,1 @@
-rm -rf ranges && swipl prolog/main.pl createRangeFromIGS '[]' '[root_shell]' '[paramPasswordLength-5]'
+rm -rf ranges/* && swipl prolog/main.pl createLatticeFromIGS '[]' '[goal]' '[paramPasswordLength-5]'

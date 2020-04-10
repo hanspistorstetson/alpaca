@@ -1,4 +1,4 @@
-:- initialization main.
+:- (initialization main).
 :- [alpaca].
 
 /**
@@ -8,7 +8,6 @@
  *      graphAllVulns 'filename.dot'
  *      createRangeFromIGS '[Goal]' '[InitialState]' '[Params]'
  */
-
 main :-
     current_prolog_flag(argv, Argv),
     parseArgs(Argv),
@@ -18,18 +17,18 @@ main :-
 
 % Measure performace of predicate
 parseArgs([Time|Rest]) :-
-    Time = 'time',
+    Time=time,
     performance(Rest).
 % Used for graphAllVulns
-parseArgs([Pred, Filename]) :- 
+parseArgs([Pred, Filename]) :-
     current_predicate(Pred/1),
-    Run =.. [Pred, Filename], 
+    Run=..[Pred, Filename],
     call(Run).
 % Used for createRangeFromIGS
 parseArgs([Pred|Rest]) :-
     argsToTerm(Rest, Goal, Initial, Params),
     current_predicate(Pred/3),
-    Run =.. [Pred, Goal, Initial, Params],
+    Run=..[Pred, Goal, Initial, Params],
     call(Run).
 
 argsToTerm([ArgsGoal, ArgsInitial, ArgsParams], Goal, Initial, Params) :-

@@ -72,11 +72,14 @@ outputLattice(RangeDir, RangeId, (LatticeId, Lattice)) :-
     absolute_file_name("./packer", PackerDir),
     link_file(PackerDir, LatticePackerDir, symbolic),
     format(atom(LatticePackerScript), "~s/run_packer.sh", [LatticeDir]),
+    format(atom(LatticeProvisionScript), "~s/provision.sh", [LatticeDir]),
     absolute_file_name("./run_packer.sh", PackerScript),
+    absolute_file_name("./provision.sh", ProvisionScript),
     link_file(PackerScript, LatticePackerScript, symbolic),
+    link_file(ProvisionScript, LatticeProvisionScript, symbolic),
     generatePNGFromLattice(LatticeDir, Lattice),
     Lattice = (Configs, _),
-    createTerraformFiles(RangeId, LatticeDir),
+    createTerraformFiles(LatticeId, LatticeDir),
 	createYamlFiles(Configs, LatticeDir), !.
 
 createYamlFiles(Configs, LatticeDir) :-
@@ -88,7 +91,7 @@ createYamlFiles(Configs, LatticeDir) :-
 	formatVars(Configs, Vars),
 	createPlaybook(Vars, Roles, LatticeDir).
 
-createTerraformFiles(RangeId, LatticeDir) :-
+createTerraformFiles(LatticeId, LatticeDir) :-
     format(atom(TerraformDir), "~s", [LatticeDir]),
     format("Writing ~s~n", [TerraformDir]),
     format(atom(TerraformMain), "~s/main.tf", [TerraformDir]),
@@ -98,7 +101,7 @@ createTerraformFiles(RangeId, LatticeDir) :-
     copy_file("./terraform/variables.tf", TerraformVariables),
     copy_file("./terraform/terraform.auto.tfvars", TerraformTFVars),
     read_file_to_string("./terraform/vm.tf", BaseString, []),
-    format(atom(VMNAME), "vm_~s", [RangeId]),
+    format(atom(VMNAME), "vm_~s", [LatticeId]),
     re_replace("`VMNAME`"/g, VMNAME, BaseString, FormattedString),
     open(TerraformMain, append, Stream),
     format(atom(StringToWrite), FormattedString, []),

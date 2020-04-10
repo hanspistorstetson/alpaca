@@ -1,0 +1,13 @@
+---
+- name: Enable & Blacklist All
+  ufw:
+    state: enabled
+    policy: reject
+
+- name: Whitelist IP addrs
+  ufw:
+    rule: allow
+    src: "{{ ufw.ips.0}}"
+  notify:
+  - restart ufw
+
